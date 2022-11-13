@@ -1,0 +1,31 @@
+### Arch Linux kde ###
+
+[packages]
+plasma
+xorg
+konsole
+dolphin
+sddm
+pipewire-media-session
+phonon-qt5-gstreamer
+akregator
+ark
+elisa
+filelight
+gwenview
+kate
+kcalc
+kdenlive
+kwalletmanager
+okular
+spectacle
+yakuake
+plasma-wayland-session
+
+[services]
+% sudo systemctl enable sddm
+% sudo systemctl enable NetworkManager
+% sudo systemctl start --now sddm
+
+#[postinstall]
+#& sudo sed -i 's/#Current=breeze/Current=breeze/'
