@@ -1,11 +1,12 @@
 ### Arch Linux kde ###
 
 [packages]
-plasma-desktop
 xorg
+sddm
+plasma
+plasma-wayland-session
 konsole
 dolphin
-sddm
 pipewire-media-session
 phonon-qt5-gstreamer
 akregator
@@ -20,7 +21,7 @@ kwalletmanager
 okular
 spectacle
 yakuake
-plasma-wayland-session
+flatpak
 
 [services]
 % sudo systemctl enable sddm
@@ -29,3 +30,5 @@ plasma-wayland-session
 
 #[postinstall]
 #& sudo sed -i 's/#Current=breeze/Current=breeze/'
+& sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+& flatpak install flathub org.mozilla.firefox
