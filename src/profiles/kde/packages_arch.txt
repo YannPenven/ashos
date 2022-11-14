@@ -1,7 +1,7 @@
 ### Arch Linux kde ###
 
 [packages]
-plasma
+plasma-desktop
 xorg
 konsole
 dolphin

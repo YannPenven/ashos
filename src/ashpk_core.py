@@ -29,6 +29,7 @@ distro = subprocess.check_output(['/usr/bin/detect_os.sh', 'id']).decode('utf-8'
 distro_name = subprocess.check_output(['/usr/bin/detect_os.sh', 'name']).decode('utf-8').strip()
 GRUB = subprocess.check_output("ls /boot | grep grub", encoding='utf-8', shell=True).strip()
 DEBUG = " >/dev/null 2>&1" # options: "", " >/dev/null 2>&1"
+git_url = "https://raw.githubusercontent.com/ashos/ashos/"
 
 # ------------------------------ CORE FUNCTIONS ------------------------------ #
 
@@ -67,9 +68,9 @@ def ash_update():
         d = distro.split("_")[0] # Remove '_ashos"
         tmp_ash = subprocess.check_output("mktemp -d -p /.snapshots/tmp ashpk.XXXXXXXXXXXXXXXX", shell=True, encoding='utf-8').strip()
         subprocess.check_output(f"curl --fail -H 'pragma:no-cache' -H 'cache-control:no-cache,no-store' -s -o {tmp_ash}/ashpk_core.py -O \
-                                'https://raw.githubusercontent.com/ashos/ashos/main/src/ashpk_core.py'", shell=True) # GitHub still caches
+                                '{git_url}main/src/ashpk_core.py'", shell=True) # GitHub still caches
         subprocess.check_output(f"curl --fail -H 'pragma:no-cache' -H 'cache-control:no-cache,no-store' -s -o {tmp_ash}/ashpk.py -O \
-                                'https://raw.githubusercontent.com/ashos/ashos/main/src/distros/{d}/ashpk.py'", shell=True)
+                                '{git_url}main/src/distros/{d}/ashpk.py'", shell=True)
         os.system(f"cat {tmp_ash}/ashpk_core.py {tmp_ash}/ashpk.py > {tmp_ash}/ash")
         os.system(f"chmod +x {tmp_ash}/ash")
     except subprocess.CalledProcessError:
@@ -515,7 +516,7 @@ def install_profile(snapshot, profile):
         print(f"Updating the system before installing profile {profile}.")
         auto_upgrade(snapshot)
         tmp_prof = subprocess.check_output("mktemp -d -p /tmp ashpk_profile.XXXXXXXXXXXXXXXX", shell=True, encoding='utf-8').strip()
-        subprocess.check_output(f"curl --fail -o {tmp_prof}/packages.txt -LO https://raw.githubusercontent.com/ashos/ashos/main/src/profiles/{profile}/packages{get_distro_suffix()}.txt", shell=True)
+        subprocess.check_output(f"curl --fail -o {tmp_prof}/packages.txt -LO {git_url}main/src/profiles/{profile}/packages{get_distro_suffix()}.txt", shell=True)
         prepare(snapshot)
         try: # Ignore empty lines or ones starting with # [ % &
             pkg = subprocess.check_output(f"cat {tmp_prof}/packages.txt | grep -E -v '^#|^\[|^%|^&|^$'", shell=True).decode('utf-8').strip().replace('\n', ' ')
@@ -538,7 +539,7 @@ def install_profile_live(profile):
     print(f"Updating the system before installing profile {profile}.")
     auto_upgrade(tmp)
     tmp_prof = subprocess.check_output("mktemp -d -p /tmp ashpk_profile.XXXXXXXXXXXXXXXX", shell=True, encoding='utf-8').strip()
-    subprocess.check_output(f"curl --fail -o {tmp_prof}/packages.txt -LO https://raw.githubusercontent.com/ashos/ashos/main/src/profiles/{profile}/packages{get_distro_suffix()}.txt", shell=True)
+    subprocess.check_output(f"curl --fail -o {tmp_prof}/packages.txt -LO {git_url}main/src/profiles/{profile}/packages{get_distro_suffix()}.txt", shell=True)
   # Ignore empty lines or ones starting with # [ % &
     pkg = subprocess.check_output(f"cat {tmp_prof}/packages.txt | grep -E -v '^#|^\[|^%|^$'", shell=True).decode('utf-8').strip().replace('\n', ' ')
     excode1 = install_package_live(tmp, pkg) ### REVIEW snapshot argument needed
