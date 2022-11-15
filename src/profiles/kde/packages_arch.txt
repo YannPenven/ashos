@@ -2,25 +2,27 @@
 
 [packages]
 xorg
+
 sddm
 plasma
 plasma-wayland-session
-konsole
-dolphin
+
 pipewire-media-session
 phonon-qt5-gstreamer
+
+kde-system-meta
+kde-utilities-meta
+
+kdegraphics-thumbnailers
 akregator
-ark
 elisa
 filelight
 gwenview
-kate
 kcalc
 kdenlive
-kwalletmanager
 okular
 spectacle
-yakuake
+
 flatpak
 
 [services]
@@ -31,4 +33,4 @@ flatpak
 #[postinstall]
 #& sudo sed -i 's/#Current=breeze/Current=breeze/'
 & sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-& flatpak install flathub org.mozilla.firefox
+& flatpak install flathub org.mozilla.firefox -y
